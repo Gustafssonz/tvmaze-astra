@@ -17,7 +17,7 @@ function App() {
           <Navbar></Navbar>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
-            <Route path="/detail/:id" element={<DetailScreen />} />
+            <Route path="/details/:id" element={<DetailScreen />} />
           </Routes>
           <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
         </div>

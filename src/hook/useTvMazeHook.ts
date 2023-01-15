@@ -21,22 +21,23 @@ export const useTVMazeHook = () => {
       });
   };
 
-  //   const onShowClickHandler = (show: Show) => {
-  //     // send user to detail page based on show id
-  //     setDetails(show);
-  //     history.push(`/details/${show.id}`);
-
-  //     setDetails(series.show);
-  //   };
-
-  //   const closeModal = () => {
-  //     setDetails(null);
-  //   };
+  // fetch details of a show based on id
+  const showDetailsHandler = (id: string) => {
+    console.log("show id: " + id);
+    Axios.get<Show>(`https://api.tvmaze.com/shows/${id}`)
+      .then((res) => {
+        console.log("Show details, ", res.data);
+        setDetails(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return {
     series: result,
-    details: detail,
+    show: detail,
     search: searchHandler,
-    // onClick: onShowClickHandler,
+    showDetails: showDetailsHandler,
   };
 };

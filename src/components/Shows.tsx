@@ -3,10 +3,11 @@ import { Series } from "../models/TvMazeShow";
 
 export interface Props {
   data: Series[];
-  // onClick: (id: number) => void;
 }
 
 function Shows({ data }: Props) {
+  console.log("from show", data);
+
   const noResults = (
     <div className="flex justify-center items-center h-96">
       <h1 className="text-2xl font-bold">No results found</h1>
@@ -24,19 +25,22 @@ function Shows({ data }: Props) {
         <tr>
           <th className="border border-gray-200 px-4 py-2">Name</th>
           <th className="border border-gray-200 px-4 py-2">Image</th>
+          <th className="border border-gray-200 px-4 py-2">Link to details</th>
         </tr>
       </thead>
 
       <tbody>
         {data.map(({ show }) => (
-          <Link to={`/details/${show.id}`}>
-            <tr key={show.id} className="w-full">
-              <td className="border border-gray-200 px-4 py-2">{show.name}</td>
-              <td className="border border-gray-200 px-4 py-2">
-                <img src={show.image?.medium} alt={show.name} />
-              </td>
-            </tr>
-          </Link>
+          <tr key={show.id} className="w-full">
+            <td className="border border-gray-200 px-4 py-2">{show.name}</td>
+            <td className="border border-gray-200 px-4 py-2">
+              <img src={show.image?.medium} alt={show.name} />
+            </td>
+            <td className="border border-gray-200 px-4 py-2">
+              {" "}
+              <Link to={`/details/${show.id}`}>Link</Link>
+            </td>
+          </tr>
         ))}
       </tbody>
     </table>
@@ -44,7 +48,7 @@ function Shows({ data }: Props) {
 
   // generate a table with the data
   return (
-    <div className="relative overflow-x-auto mt-4">
+    <div className="container mx-auto px-4">
       {data.length === 0 ? noResults : dataTable}
     </div>
   );
