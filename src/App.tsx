@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import "./App.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import HomeScreen from "./pages/HomeScreen";

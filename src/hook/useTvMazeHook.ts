@@ -39,11 +39,14 @@ export const useTVMazeHook = () => {
   const showDetailsHandler = (id: string) => {
     Axios.get<Show>(`https://api.tvmaze.com/shows/${id}`)
       .then((res) => {
-        console.log("Show details, ", res.data);
         setDetails(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.code === "ECONNABORTED") {
+          setSlowConenction(true);
+        } else {
+          setError(true);
+        }
       });
   };
 
