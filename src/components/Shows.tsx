@@ -1,10 +1,53 @@
-import React from "react";
-import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
+import { Series } from "../models/TvMazeShow";
 
-function Shows({ data }: any) {
-  console.log(data);
+export interface Props {
+  data: Series[];
+  // onClick: (id: number) => void;
+}
 
-  return <div>{data}</div>;
+function Shows({ data }: Props) {
+  const noResults = (
+    <div className="flex justify-center items-center h-96">
+      <h1 className="text-2xl font-bold">No results found</h1>
+    </div>
+  );
+  const loading = (
+    <div className="flex justify-center items-center h-96">
+      <h1 className="text-2xl font-bold">Loading...</h1>
+    </div>
+  );
+
+  const dataTable = (
+    <table className="w-full text-sm text-left text-gray-500">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th className="border border-gray-200 px-4 py-2">Name</th>
+          <th className="border border-gray-200 px-4 py-2">Image</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {data.map(({ show }) => (
+          <Link to={`/details/${show.id}`}>
+            <tr key={show.id} className="w-full">
+              <td className="border border-gray-200 px-4 py-2">{show.name}</td>
+              <td className="border border-gray-200 px-4 py-2">
+                <img src={show.image?.medium} alt={show.name} />
+              </td>
+            </tr>
+          </Link>
+        ))}
+      </tbody>
+    </table>
+  );
+
+  // generate a table with the data
+  return (
+    <div className="relative overflow-x-auto mt-4">
+      {data.length === 0 ? noResults : dataTable}
+    </div>
+  );
 }
 
 export default Shows;

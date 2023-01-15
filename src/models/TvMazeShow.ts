@@ -1,9 +1,9 @@
-export interface ShowsRoot {
+export interface Series {
   score: number;
-  show: ShowData;
+  show: Show;
 }
 
-export interface ShowData {
+export interface Show {
   id: number;
   url: string;
   name: string;

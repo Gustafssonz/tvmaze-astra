@@ -1,12 +1,16 @@
 import { useState } from "react";
 import Searchbar from "../components/Searchbar";
+import Shows from "../components/Shows";
+import { useTVMazeHook } from "../hook/useTvMazeHook";
 
 function HomeScreen() {
   const [searchTerm, setSearchTerm] = useState("spiderman");
+  const { series, search } = useTVMazeHook();
 
   return (
     <>
-      <Searchbar onSearch={setSearchTerm} />
+      <Searchbar onSearch={search} />
+      <Shows data={series} />
     </>
   );
 }
