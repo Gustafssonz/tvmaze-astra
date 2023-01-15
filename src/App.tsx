@@ -15,8 +15,12 @@ function App() {
   const { slowStatus, errorStatus } = useTVMazeHook();
 
   useEffect(() => {
-    console.log("slowStatus", slowStatus);
-    console.log("errorStatus", errorStatus);
+    if (slowStatus) {
+      console.log("Slow network connection");
+    }
+    if (errorStatus) {
+      console.log("An error occurred while fetching data");
+    }
   }, [slowStatus, errorStatus]);
 
   return (

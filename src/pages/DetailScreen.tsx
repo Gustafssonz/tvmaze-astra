@@ -4,9 +4,11 @@ import { useTVMazeHook } from "../hook/useTvMazeHook";
 
 function DetailScreen() {
   const { show, showDetails } = useTVMazeHook();
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
+    setLoading(true);
     id && showDetails(id);
   }, [id]);
 
@@ -28,7 +30,7 @@ function DetailScreen() {
     </button>
   );
 
-  return (
+  const showCard = (
     <div className="flex flex-col p-6 md:p-12 mx-auto shadow-md rounded-md justify-center">
       {goBackButton}
       <h1 className="text-4xl font-bold text-center pb-2">{show?.name}</h1>
@@ -43,6 +45,13 @@ function DetailScreen() {
         />
       </div>
       <p className="p-2 font-sans text-lg">{showSummary}</p>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      {loading && show === null ? <p>Loading...</p> : null}
+      {show && showCard}
     </div>
   );
 }

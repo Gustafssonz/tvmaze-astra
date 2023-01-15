@@ -8,7 +8,6 @@ export const useTVMazeHook = () => {
 
   const [slowConnection, setSlowConenction] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const TIMEOUT = 2000;
 
@@ -20,13 +19,10 @@ export const useTVMazeHook = () => {
   }, []);
 
   const searchHandler = (text: string) => {
-    setLoading(true);
-
     Axios.get<Series[]>(`https://api.tvmaze.com/search/shows?q=${text}`, {
       timeout: TIMEOUT,
     })
       .then((res) => {
-        setLoading(false);
         setResult(res.data);
         window.localStorage.setItem("result", JSON.stringify(res.data));
       })
@@ -41,11 +37,9 @@ export const useTVMazeHook = () => {
 
   // fetch details of a show based on id
   const showDetailsHandler = (id: string) => {
-    setLoading(true);
     Axios.get<Show>(`https://api.tvmaze.com/shows/${id}`)
       .then((res) => {
         console.log("Show details, ", res.data);
-        setLoading(false);
         setDetails(res.data);
       })
       .catch((err) => {
@@ -56,7 +50,6 @@ export const useTVMazeHook = () => {
   return {
     slowStatus: slowConnection,
     errorStatus: error,
-    loadingStatus: loading,
     series: result,
     show: detail,
     search: searchHandler,
