@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   onSearch: (term: string) => void;
@@ -15,7 +15,7 @@ function Searchbar({ onSearch }: Props) {
   };
 
   return (
-    <form>
+    <form className="p-2">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg

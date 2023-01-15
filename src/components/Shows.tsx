@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
+import { useTVMazeHook } from "../hook/useTvMazeHook";
 import { Series } from "../models/TvMazeShow";
+import ShowItem from "./ShowItem";
 
-export interface Props {
+interface Props {
   data: Series[];
 }
 
 function Shows({ data }: Props) {
-  console.log("from show", data);
+  const { loadingStatus } = useTVMazeHook();
 
   const noResults = (
     <div className="flex justify-center items-center h-96">
@@ -20,36 +22,20 @@ function Shows({ data }: Props) {
   );
 
   const dataTable = (
-    <table className="w-full text-sm text-left text-gray-500">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th className="border border-gray-200 px-4 py-2">Name</th>
-          <th className="border border-gray-200 px-4 py-2">Image</th>
-          <th className="border border-gray-200 px-4 py-2">Link to details</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {data.map(({ show }) => (
-          <tr key={show.id} className="w-full">
-            <td className="border border-gray-200 px-4 py-2">{show.name}</td>
-            <td className="border border-gray-200 px-4 py-2">
-              <img src={show.image?.medium} alt={show.name} />
-            </td>
-            <td className="border border-gray-200 px-4 py-2">
-              {" "}
-              <Link to={`/details/${show.id}`}>Link</Link>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      {data?.map(({ show }) => (
+        <Link to={`/details/${show?.id}`} key={show?.id}>
+          <ShowItem show={show} />
+        </Link>
+      ))}
+    </div>
   );
 
   // generate a table with the data
   return (
-    <div className="container mx-auto px-4">
-      {data.length === 0 ? noResults : dataTable}
+    <div className="container mx-auto p-2">
+      {loadingStatus && loading}
+      {!loadingStatus && data?.length === 0 ? noResults : dataTable}
     </div>
   );
 }

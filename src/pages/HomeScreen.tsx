@@ -4,7 +4,6 @@ import Shows from "../components/Shows";
 import { useTVMazeHook } from "../hook/useTvMazeHook";
 
 function HomeScreen() {
-  const [searchTerm, setSearchTerm] = useState("spiderman");
   const { series, search } = useTVMazeHook();
 
   return (

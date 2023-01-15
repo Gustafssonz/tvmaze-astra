@@ -3,18 +3,30 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import Navbar from "./components/Navbar";
 import HomeScreen from "./pages/HomeScreen";
 import DetailScreen from "./pages/DetailScreen";
+import Alert from "./components/Alert";
+import { useTVMazeHook } from "./hook/useTvMazeHook";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 function App() {
+  const { slowStatus, errorStatus } = useTVMazeHook();
+
+  useEffect(() => {
+    console.log("slowStatus", slowStatus);
+    console.log("errorStatus", errorStatus);
+  }, [slowStatus, errorStatus]);
+
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <div className="container mx-auto m-5">
-          <Navbar></Navbar>
+          {slowStatus && <Alert message="Slow network connection" />}
+          {errorStatus && (
+            <Alert message="An error occurred while fetching data" />
+          )}
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/details/:id" element={<DetailScreen />} />
