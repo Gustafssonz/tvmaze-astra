@@ -30,7 +30,7 @@ export const useTVMazeHook = () => {
         if (err.code === "ECONNABORTED") {
           setSlowConenction(true);
         } else {
-          console.log("ERROR", err);
+          console.error("searchHandler", err);
           setError(true);
         }
       });

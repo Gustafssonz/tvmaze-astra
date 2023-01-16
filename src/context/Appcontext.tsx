@@ -5,10 +5,14 @@ import { Series, Show } from "../models/TvMazeShow";
 interface IAppContext {
   slowStatus: boolean;
   errorStatus: boolean;
-  series: Series[];
+  series: Series[] | null;
   show: Show | null;
+  favorites: Show[];
   search: (text: string) => void;
   showDetails: (id: string) => void;
+  addFavorite: (show: Show) => void;
+  removeFavorite: (show: Show) => void;
+  removeAllFavorites: () => void;
 }
 
 const AppContext = createContext<IAppContext>({
@@ -16,8 +20,12 @@ const AppContext = createContext<IAppContext>({
   errorStatus: false,
   series: [],
   show: null,
+  favorites: [],
   search: () => {},
   showDetails: () => {},
+  addFavorite: () => {},
+  removeFavorite: () => {},
+  removeAllFavorites: () => {},
 });
 
 export const ProvideApp = ({ children }: any) => {
@@ -32,14 +40,17 @@ export const useApp = () => {
 const useProvideApp = () => {
   const [slowStatus, setSlowStatus] = useState(false);
   const [errorStatus, setErrorStatus] = useState(false);
-  const [series, setSeries] = useState<Series[]>([]);
+  const [series, setSeries] = useState<Series[] | null>(null);
   const [show, setShow] = useState<Show | null>(null);
+  const [favorites, setFavorites] = useState<Show[]>(() => {
+    const savedFavorites = window.localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
 
   const search = (text: string) => {
     const savedData = window.localStorage.getItem(`text_${text}`);
     if (savedData) {
-      console.log("DATA FROM LOCAL STORAGE");
-      setShow(JSON.parse(savedData));
+      setSeries(JSON.parse(savedData));
       return;
     } else {
       Axios.get(`https://api.tvmaze.com/search/shows?q=${text}`, {
@@ -53,7 +64,7 @@ const useProvideApp = () => {
           if (err.code === "ECONNABORTED") {
             setSlowStatus(true);
           } else {
-            console.log("ERROR search: ", err);
+            console.error("search: ", err);
             setErrorStatus(true);
           }
         });
@@ -64,7 +75,6 @@ const useProvideApp = () => {
     const savedData = window.localStorage.getItem(`show_${id}`);
 
     if (savedData) {
-      console.log("DATA FROM LOCAL STORAGE");
       setShow(JSON.parse(savedData));
       return;
     } else {
@@ -74,10 +84,27 @@ const useProvideApp = () => {
           window.localStorage.setItem(`show_${id}`, JSON.stringify(res.data));
         })
         .catch((err) => {
-          console.log("Error showDetails: ", err);
+          console.error("showDetails: ", err);
           setErrorStatus(true);
         });
     }
+  };
+
+  const addFavorite = (show: Show) => {
+    const newFavorites = [...favorites, show];
+    setFavorites(newFavorites);
+    window.localStorage.setItem("favorites", JSON.stringify(newFavorites));
+  };
+
+  const removeFavorite = (show: Show) => {
+    const newFavorites = favorites.filter((f) => f.id !== show.id);
+    setFavorites(newFavorites);
+    window.localStorage.setItem("favorites", JSON.stringify(newFavorites));
+  };
+
+  const removeAllFavorites = () => {
+    setFavorites([]);
+    window.localStorage.removeItem("favorites");
   };
 
   return {
@@ -85,7 +112,11 @@ const useProvideApp = () => {
     errorStatus,
     series,
     show,
+    favorites,
     search,
+    addFavorite,
+    removeFavorite,
+    removeAllFavorites,
     showDetails,
   };
 };

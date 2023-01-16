@@ -14,9 +14,9 @@ function Shows() {
   const dataTable = (
     <div>
       {series?.map(({ show }) => (
-        <Link to={`/details/${show?.id}`} key={show?.id}>
-          <ShowItem show={show} />
-        </Link>
+        // <Link to={`/details/${show?.id}`} key={show?.id}>
+        <ShowItem key={show.id} show={show} />
+        // </Link>
       ))}
     </div>
   );
