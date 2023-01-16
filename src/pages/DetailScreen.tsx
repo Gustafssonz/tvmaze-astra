@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useTVMazeHook } from "../hook/useTvMazeHook";
+import { useApp } from "../context/Appcontext";
 
 function DetailScreen() {
-  const { show, showDetails } = useTVMazeHook();
+  const { show, showDetails } = useApp();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
-  useEffect(() => {
+  useMemo(() => {
     setLoading(true);
     id && showDetails(id);
   }, [id]);

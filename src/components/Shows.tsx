@@ -1,14 +1,10 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useTVMazeHook } from "../hook/useTvMazeHook";
-import { Series } from "../models/TvMazeShow";
+import { useApp } from "../context/Appcontext";
 import ShowItem from "./ShowItem";
 
-interface Props {
-  data: Series[];
-}
+function Shows() {
+  const { series } = useApp();
 
-function Shows({ data }: Props) {
   const noResults = (
     <div className="flex justify-center items-center h-96">
       <h1 className="text-2xl font-bold">No results found</h1>
@@ -17,7 +13,7 @@ function Shows({ data }: Props) {
 
   const dataTable = (
     <div>
-      {data?.map(({ show }) => (
+      {series?.map(({ show }) => (
         <Link to={`/details/${show?.id}`} key={show?.id}>
           <ShowItem show={show} />
         </Link>
@@ -28,7 +24,7 @@ function Shows({ data }: Props) {
   // generate a table with the data
   return (
     <div className="container mx-auto p-2">
-      {data?.length === 0 ? noResults : dataTable}
+      {series?.length === 0 ? noResults : dataTable}
     </div>
   );
 }

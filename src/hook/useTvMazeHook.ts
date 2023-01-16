@@ -19,7 +19,7 @@ export const useTVMazeHook = () => {
   }, []);
 
   const searchHandler = (text: string) => {
-    Axios.get<Series[]>(`https://api.tvmaze.com/search/shows?q=${text}`, {
+    Axios.get<Series[]>(`https://api.tvmaze.com/searh/shows?q=${text}`, {
       timeout: TIMEOUT,
     })
       .then((res) => {
@@ -30,6 +30,7 @@ export const useTVMazeHook = () => {
         if (err.code === "ECONNABORTED") {
           setSlowConenction(true);
         } else {
+          console.log("ERROR", err);
           setError(true);
         }
       });

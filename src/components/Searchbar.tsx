@@ -1,17 +1,15 @@
 import { useState } from "react";
+import { useApp } from "../context/Appcontext";
 
-interface Props {
-  onSearch: (term: string) => void;
-}
-
-function Searchbar({ onSearch }: Props) {
+function Searchbar() {
   const [searchShow, setSearchShow] = useState("");
+  const { search } = useApp();
 
   const onSearchHandler = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    onSearch(searchShow);
+    search(searchShow);
   };
 
   return (
