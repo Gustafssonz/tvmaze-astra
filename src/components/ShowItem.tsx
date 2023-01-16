@@ -9,8 +9,6 @@ interface Props {
 function ShowItem({ show }: Props) {
   const { favorites, addFavorite, removeFavorite } = useApp();
 
-  useEffect(() => {}, [favorites]);
-
   const checkIfFavorite = (id: number) => {
     return favorites?.some((favorite) => favorite.id === id);
   };

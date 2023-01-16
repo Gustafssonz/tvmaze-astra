@@ -28,7 +28,7 @@ const Alert = ({ message }: Props) => {
     alertCSS = AlertType.ERROR;
   }
 
-  // set timeout to close the alert after 3 seconds
+  // set timeout to close the alert after 5 seconds
   setTimeout(() => {
     setVisible(false);
   }, 5000);
